@@ -2,11 +2,9 @@
   <div id="app">
     <h1>Welcome to connect4</h1>
     <div class="wrapper">
-      <Colspaces v-bind:colspaces="spaces[0]"/>
-      <Colspaces v-bind:colspaces="spaces[1]"/>
-      <Colspaces v-bind:colspaces="spaces[2]"/>
-      <Colspaces v-bind:colspaces="spaces[3]"/>
-      <Colspaces v-bind:colspaces="spaces[4]"/>
+      <div v-bind:key="index" v-for="(colspace, index) in spaces">
+        <Colspaces v-bind:colspaces="spaces[index]" v-bind:id="index" v-on:fill-space="fillSpace"/>
+      </div>
     </div>
   </div>
 </template>
@@ -21,6 +19,7 @@ export default {
   },
   data() {
     return {
+      playerOne: true,
       spaces: [
         [
           {
@@ -133,6 +132,15 @@ export default {
           }
         ]
       ]
+    }
+  },
+  methods: {
+    fillSpace(x,y) {
+      if (x > -1 && y > -1) {
+        this.spaces[x][y].filled = true;
+        this.spaces[x][y].player = this.playerOne ? 0 : 1;
+        this.playerOne = !this.playerOne;
+      }
     }
   }
 }

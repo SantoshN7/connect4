@@ -1,11 +1,21 @@
 <template>
-  <div/>
+  <div v-bind:style="{'background-color': getActiveColor()}"/>
 </template>
 
 <script>
 export default {
   name: "Space",
-  props: ["space"]
+  props: ["space"],
+  methods: {
+    getActiveColor() {
+      if (this.space.filled && this.space.player === 0) {
+        return 'green';
+      } else if (this.space.filled && this.space.player === 1) {
+        return 'red';
+      }
+      return 'transparent';
+    }
+  }
 }
 </script>
 
