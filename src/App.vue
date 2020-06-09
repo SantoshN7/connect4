@@ -136,10 +136,22 @@ export default {
   },
   methods: {
     fillSpace(x,y) {
-      if (x > -1 && y > -1) {
+      if (y > -1) {
         this.spaces[x][y].filled = true;
         this.spaces[x][y].player = this.playerOne ? 0 : 1;
-        this.playerOne = !this.playerOne;
+        this.checkGameOver();
+        this.switchTurn();
+      }
+    },
+    switchTurn() {
+      this.playerOne = !this.playerOne;
+    },
+    checkGameOver() {
+      let allSpacesFilled = this.spaces.every((colspace) => colspace.every((space) => space.filled));
+      if (allSpacesFilled) {
+        setTimeout(() => {
+          alert("Game Over !!");
+        }, 500);
       }
     }
   }
