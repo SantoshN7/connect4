@@ -138,20 +138,77 @@ export default {
     fillSpace(x,y) {
       if (y > -1) {
         this.spaces[x][y].filled = true;
-        this.spaces[x][y].player = this.playerOne ? 0 : 1;
-        this.checkGameOver();
+        this.spaces[x][y].player = this.getActivePlayer();
+        this.checkGameOver(x,y);
         this.switchTurn();
       }
     },
     switchTurn() {
       this.playerOne = !this.playerOne;
     },
-    checkGameOver() {
+    getActivePlayer() {
+      return this.playerOne ? 0 : 1;
+    },
+    getActivePlayerColor() {
+      return this.playerOne ? 'Green' : 'Red';
+    },
+    checkVerticalWin(x,y) {
+      let vCountUp=0 ;
+      let vCountDown=0;
+      for (let i=0; this.spaces[x][y+i]!== undefined; i++) {
+        if (this.spaces[x][y+i].filled && this.spaces[x][y+i].player === this.getActivePlayer()) {
+          vCountUp++;
+        } else {
+          break;
+        }
+      }
+
+      for (let i=0; this.spaces[x][y-i]!== undefined; i++) {
+        if (this.spaces[x][y-i].filled && this.spaces[x][y-i].player === this.getActivePlayer()) {
+          vCountDown++;
+        } else {
+          break;
+        }
+      }
+
+      if (vCountUp + vCountDown - 1 >= 4) {
+        return true;
+      }
+      return false;
+    },
+    checkHorizontalWin(x,y) {
+      let hCountRight=0;
+      let hCountLeft=0;
+      for (let i=0; this.spaces[x+i]!== undefined;i++) {
+        if (this.spaces[x+i][y].filled && this.spaces[x+i][y].player === this.getActivePlayer()) {
+          hCountRight++;
+        } else {
+          break;
+        }
+      }
+
+      for (let i=0; this.spaces[x-i]!== undefined;i++) {
+        if (this.spaces[x-i][y].filled && this.spaces[x-i][y].player === this.getActivePlayer()) {
+          hCountLeft++;
+        } else {
+          break;
+        }
+      }
+
+      if (hCountLeft + hCountRight - 1 >= 4) {
+        return true;
+      }
+      return false;
+    },
+    checkGameOver(x,y) {
+
+      if (this.checkVerticalWin(x,y) || this.checkHorizontalWin(x,y)) {
+          alert(`Player ${this.getActivePlayerColor()} Won !!`);
+      }
+
       let allSpacesFilled = this.spaces.every((colspace) => colspace.every((space) => space.filled));
       if (allSpacesFilled) {
-        setTimeout(() => {
           alert("Game Over !!");
-        }, 500);
       }
     }
   }
