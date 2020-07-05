@@ -200,9 +200,48 @@ export default {
       }
       return false;
     },
+    checkDiagonalWin(x,y) {
+      let diagonalOneCount=0;
+      let diagonalTwoCount=0;
+      //diagonal1 check
+      for (let i=0; this.spaces[x+i]!== undefined && this.spaces[x+i][y+i]!== undefined ; i++) {
+        if (this.spaces[x+i][y+i].filled && this.spaces[x+i][y+i].player === this.getActivePlayer()) {
+          diagonalOneCount++;
+        } else {
+          break;
+        }
+      }
+      for (let i=0; this.spaces[x-i]!== undefined && this.spaces[x-i][y-i]!== undefined; i++) {
+        if (this.spaces[x-i][y-i].filled && this.spaces[x-i][y-i].player === this.getActivePlayer()) {
+          diagonalOneCount++;
+        } else {
+          break;
+        }
+      }
+      //diagonal2 check
+      for (let i=0; this.spaces[x+i]!== undefined && this.spaces[x+i][y-i]!== undefined; i++) {
+        if (this.spaces[x+i][y-i].filled && this.spaces[x+i][y-i].player === this.getActivePlayer()) {
+          diagonalTwoCount++;
+        } else {
+          break;
+        }
+      }
+      for (let i=0; this.spaces[x-i]!== undefined && this.spaces[x-i][y+i]!== undefined; i++) {
+        if (this.spaces[x-i][y+i].filled && this.spaces[x-i][y+i].player === this.getActivePlayer()) {
+          diagonalTwoCount++;
+        } else {
+          break;
+        }
+      }
+
+      if (diagonalOneCount-1>=4 || diagonalTwoCount-1>=4) {
+        return true;
+      }
+      return false;
+    },
     checkGameOver(x,y) {
 
-      if (this.checkVerticalWin(x,y) || this.checkHorizontalWin(x,y)) {
+      if (this.checkVerticalWin(x,y) || this.checkHorizontalWin(x,y) || this.checkDiagonalWin(x,y)) {
           alert(`Player ${this.getActivePlayerColor()} Won !!`);
       }
 
